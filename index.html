@@ -6,34 +6,31 @@
     <script src="https://cdn.jsdelivr.net/gh/jeromeetienne/ar.js/aframe/build/aframe-ar.min.js"></script>
 </head>
 <body style="margin: 0; overflow: hidden;">
-    <a-scene embedded arjs="trackingMethod: best;">
+    <a-scene embedded arjs="trackingMethod: best; sourceType: webcam;">
         <!-- Instruction Text -->
-        <a-text value="Tap the screen to place the object" position="0 1.8 -2" align="center" color="#FFFFFF"></a-text>
+        <a-text value="Tap to place a cube" position="0 2 -3" align="center" color="#FFFFFF"></a-text>
 
-        <!-- Objects (Initially Hidden) -->
-        <a-box id="ar-object" position="0 0 -2" scale="0.5 0.5 0.5" color="blue" visible="false"></a-box>
-
-        <!-- Camera and Cursor -->
-        <a-camera>
-            <a-cursor id="cursor" raycaster="objects: #ar-object;" fuse="false"></a-cursor>
+        <!-- Camera and Tap Interaction -->
+        <a-camera id="camera" position="0 1.6 0" look-controls>
+            <a-entity id="cursor" cursor="rayOrigin: mouse"></a-entity>
         </a-camera>
     </a-scene>
 
     <script>
-        // Function to place object on tap
+        // Listen for taps on the scene
         document.querySelector('a-scene').addEventListener('click', function (event) {
             const scene = document.querySelector('a-scene');
-            const box = document.querySelector('#ar-object');
 
-            // Get tap position
-            const tapX = event.detail.intersection.point.x;
-            const tapY = event.detail.intersection.point.y;
-            const tapZ = event.detail.intersection.point.z;
+            // Create a new cube
+            const newCube = document.createElement('a-box');
+            newCube.setAttribute('position', '0 0 -3'); // Default position in front of the camera
+            newCube.setAttribute('scale', '0.3 0.3 0.3'); // Size of the cube
+            newCube.setAttribute('color', 'blue'); // Color of the cube
 
-            // Move and show the object
-            box.setAttribute('position', `${tapX} ${tapY} ${tapZ}`);
-            box.setAttribute('visible', true);
+            // Add the cube to the scene
+            scene.appendChild(newCube);
         });
     </script>
 </body>
 </html>
+
